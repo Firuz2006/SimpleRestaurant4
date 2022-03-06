@@ -1,0 +1,26 @@
+﻿<Window x:Class="HaoRestaurant.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HaoRestaurant"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="538" Width="307.2">
+    <Grid Margin="0,0,3.8,2">
+        <GroupBox Header="menu" HorizontalAlignment="Center" Height="107" Margin="0,0,0,388" VerticalAlignment="Center" Width="277">
+            <Label Content="how many chicken" VerticalAlignment="Center" Margin="0,0,135,50" HorizontalAlignment="Center"/>
+        </GroupBox>
+        <Label Content="how many egg" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,145,390"/>
+        <TextBox x:Name="ChickenQuantityName" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="20" Margin="0,0,13,430"/>
+        <TextBox x:Name="EggQuantityName"  HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="20" Margin="0,0,13,388"/>
+        <Label Content="Customer" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="145,0,0,315"/>
+        <TextBox x:Name="CustomerName"  HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="60" Margin="170,0,0,315"/>
+        <ComboBox x:Name="WaterTypeName" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Margin="0,0,-140,410"/>
+        <Button x:Name="AddRequest" Content="Receive" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="32,0,0,315" Click="AddRequest_Click"/>
+        <Button x:Name="SendToCook" Content="Send all Customer requests to the Cook" HorizontalAlignment="Center" VerticalAlignment="Center" Width="246" Margin="0,0,0,235" Height="19" Click="SendToCook_Click"/>
+        <Label Content="Egg Quality: " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,160,190" Width="83"/>
+        <Button x:Name="ResultView" Content="Serve prepared food to the Customer" HorizontalAlignment="Center" VerticalAlignment="Center" Width="246" Margin="0,0,0,125" Click="ResultView_Click"/>
+        <Label Content="Results" Margin="0,0,184,80" Width="59" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ListBox x:Name="ResultList" HorizontalAlignment="Center" Height="237" VerticalAlignment="Center" Width="246" Margin="0,180,0,0"/>
+    </Grid>
+</Window>
