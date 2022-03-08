@@ -1,52 +1,52 @@
 using System;
-using System.Windows;
+using System.Collections;
+using System.Collections.Generic;
 namespace HaoRestaurant.EditedScripts
 {
-    public class TableRequest
+    public class TableRequest:IEnumerable,IDisposable
     {
-        private IMenuItem[][] Items=new IMenuItem[0][];
-        public void Add(int Customer, IMenuItem i)
-        { 
-            if (Items.Length <= Customer)
+        private readonly Dictionary<string, List<IMenuItem>> Items = new Dictionary<string, List<IMenuItem>>();
+        public void Add<T>(string customerName)
+        {
+            if (Items.Count==0)
             {
-                Array.Resize(ref Items,Customer+1);
-                Items[Customer] = new IMenuItem[0];
+                Items.Add(customerName,new List<IMenuItem>());
             }
-            Array.Resize(ref Items[Customer], Items[Customer].Length + 1);
-            Items[Customer][Items[Customer].Length-1] = i;
-            //MessageBox.Show(Items.Length.ToString());
+            Items[customerName].Add((IMenuItem) Activator.CreateInstance<T>());
         }
 
-        public IMenuItem[] this[Type i]
+        public List<IMenuItem> Get<T>()
         {
-            get
+            List<IMenuItem> resList = new List<IMenuItem>();
+            foreach( string key in Items.Keys)
             {
-                IMenuItem[] menu=new IMenuItem[0];
-                foreach (var Customer in Items)
+                foreach (var order in Items[key])
                 {
-                    foreach (var Request in Customer)
+                    if (order.GetType()==typeof(T))
                     {
-                       if (i == Request.GetType())
-                       {
-                           Array.Resize(ref menu, menu.Length + 1);
-                           menu[menu.Length-1] = Request;
-                       }
+                        resList.Add(order);
                     }
                 }
-                return menu;
+            }
+            return resList;
+        }
+        private List<IMenuItem> this[string customerName] => Items[customerName];
+
+        private IEnumerator GetEnumerator()
+        {
+            foreach (var V in Items.Keys)
+            {
+                yield return this[V];
             }
         }
-        public IMenuItem[] this[int Customer]
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            get
-            {
-                return Items[Customer];
-            }
+            return GetEnumerator();
         }
 
-        public void Reset()
+        public void Dispose()
         {
-            Items = new IMenuItem[0][];
+            Items.Clear();
         }
     }
 }

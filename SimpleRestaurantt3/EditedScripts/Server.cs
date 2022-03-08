@@ -1,45 +1,63 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Documents;
-
 namespace HaoRestaurant.EditedScripts
 {
     public class Server
     {
         private readonly TableRequest tableRequest=new TableRequest();
+
+        // public TableRequest getTableRequest => tableRequest;
+
         private readonly List<Drink> waters=new List<Drink>();
         private byte CustomerIndex = 0;
-        private readonly Cook cook=new Cook();
-        public void Receive(int EggQuantity,int ChickenQuantity,Drink WaterType)
+
+        public delegate void ReadyCook(TableRequest tableRequest);
+
+        public static event ReadyCook? Ready;
+
+        public void Invoke()
+        {
+            Ready?.Invoke(tableRequest);
+        }
+        
+        public Server()
+        {
+            Cook.Processed += Serve;
+        }
+        public void Receive(string customerName ,int EggQuantity,int ChickenQuantity,Type WaterType)
         {
             if (CustomerIndex == 8)
             {
                 MessageBox.Show("maximum 8");
                 return;
             }
-            waters.Add( WaterType);
+
+            if (WaterType == typeof(Coca_Cola))
+            {
+                tableRequest.Add<Coca_Cola>(customerName);
+            }else if (WaterType==typeof(Pepsi))
+            {
+                tableRequest.Add<Pepsi>(customerName);
+            }
+            else
+            {
+                tableRequest.Add<Tea>(customerName);
+            }
+            
             for (int i = 0; i <EggQuantity ; i++)
             {
-                tableRequest.Add(CustomerIndex,new Egg());
+                tableRequest.Add<Egg>(customerName);
             }
+            
             for (int i = 0; i <ChickenQuantity ; i++)
             {
-                tableRequest.Add(CustomerIndex,new Chicken());
+                tableRequest.Add<Chicken>(customerName);
             }
             
             CustomerIndex++;
         }
-
-        public delegate void ReadyCook(string msg);
-
-        public event ReadyCook Ready;
         
-        public void SendToCook()
-        {
-            cook.Process(tableRequest);
-        }
-
         public List<string> Serve()
         {
             int eggQuantity, chickenQuantity;
@@ -48,25 +66,39 @@ namespace HaoRestaurant.EditedScripts
             {
                 eggQuantity = 0;
                 chickenQuantity = 0;
-                var req = tableRequest[i];
-                foreach (var order in req)
+                string drink = "";
+                foreach (var order in tableRequest)
                 {
                     if (order is Chicken)
                     {
                         chickenQuantity++;
                     }
-                    else
+                    else if(order is Egg)
                     {
                         eggQuantity++;
                     }
+                    else if(order is Coca_Cola cola)
+                    {
+                        drink = "CocaCola ";
+                        cola.Obtain();
+                        cola.Serve();
+                    }
+                    else if(order is Pepsi pepsi)
+                    {
+                        drink = "Pepsi ";
+                        pepsi.Obtain();
+                        pepsi.Serve();
+                    }
+                    else if(order is Tea tea)
+                    {
+                        drink = "Tea ";
+                        tea.Obtain();
+                        tea.Serve();
+                    }
                 }
-                waters[i].Obtain();
-                waters[i].Serve();
-                res.Add("Customer " + i + " is served " + chickenQuantity + " chicken, " + eggQuantity + " egg, " +
-                         waters[i].ToString().Split('.')[2]);
+                res.Add("Customer " + i + " is served " + drink + chickenQuantity + " chicken, " + eggQuantity + " egg");
             }
-            tableRequest.Reset();
-            waters.Clear();
+            tableRequest.Dispose();
             CustomerIndex = 0;
             return res;
         }

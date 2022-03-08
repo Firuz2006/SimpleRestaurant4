@@ -15,17 +15,17 @@ namespace HaoRestaurant
             WaterTypeName.Items.Add("Pepsi");
             WaterTypeName.SelectedIndex = 0;
         }
-        private Server server = new Server();
+        private readonly Server server = new Server();
         private void AddRequest_Click(object sender, RoutedEventArgs e)
         {
-            Drink water = new Pepsi();
+            Type water = typeof(Pepsi);
             switch (WaterTypeName.SelectedIndex)
             {
                 case 0:
-                    water = new Tea();
+                    water = typeof(Tea);
                     break;
                 case 1:
-                    water = new Coca_Cola();
+                    water = typeof(Coca_Cola);
                     break;
             }
             int a = -2;
@@ -44,7 +44,7 @@ namespace HaoRestaurant
                     a = -22;
                     int.Parse("d");
                 }
-                server.Receive(int.Parse(EggQuantityName.Text), int.Parse(ChickenQuantityName.Text), water);
+                server.Receive(CustomerName.Text,int.Parse(EggQuantityName.Text), int.Parse(ChickenQuantityName.Text), water);
             }
             catch (Exception exception)
             {
@@ -73,15 +73,15 @@ namespace HaoRestaurant
             }
             else
             {
-                server.SendToCook();
+                server.Invoke();
                 IsShippedToCook = true;
             }
         }
 
         private void ResultView_Click(object sender, RoutedEventArgs e)
         {
-            IsShippedToCook = false; 
-            List<string> outs = server.Serve();
+            IsShippedToCook = false;
+            var outs = server.Serve();
             if (outs.Count == 0)
             {
                 MessageBox.Show("no orders to give");

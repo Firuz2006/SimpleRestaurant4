@@ -1,12 +1,23 @@
+using System.Collections.Generic;
+
 namespace HaoRestaurant.EditedScripts
 {
     public class Cook
     {
+        
+        public delegate List<string> processed();
+
+        public static event processed Processed;
+        
+        public Cook()
+        {
+            Server.Ready += Process;
+        }
         public void Process(TableRequest tableRequest)
         {
-            var ChickenAll = tableRequest[typeof(Chicken)];
-
-            var EggAll = tableRequest[typeof(Egg)];
+            var ChickenAll = tableRequest.Get<Chicken>();
+        
+            var EggAll = tableRequest.Get<Egg>();
             
             foreach (var chicken in ChickenAll)
             {
@@ -22,7 +33,7 @@ namespace HaoRestaurant.EditedScripts
                 ((Egg)egg).Cook();
                 ((Egg)egg).Serve();
             }
-
+        
         } 
     }
 }
