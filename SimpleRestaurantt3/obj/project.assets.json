@@ -8,30 +8,28 @@
     "net5.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Фируз\\.nuget\\packages\\": {},
+    "C:\\Users\\FiruzIR\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Фируз\\Desktop\\HaoRestaurant_edited\\SimpleRestaurantt3\\SimpleRestaurantt3\\SimpleRestaurantt3.csproj",
+      "projectUniqueName": "C:\\Users\\FiruzIR\\Desktop\\SimpleRestaurant4\\SimpleRestaurantt3\\SimpleRestaurantt3.csproj",
       "projectName": "SimpleRestaurantt3",
-      "projectPath": "C:\\Users\\Фируз\\Desktop\\HaoRestaurant_edited\\SimpleRestaurantt3\\SimpleRestaurantt3\\SimpleRestaurantt3.csproj",
-      "packagesPath": "C:\\Users\\Фируз\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Фируз\\Desktop\\HaoRestaurant_edited\\SimpleRestaurantt3\\SimpleRestaurantt3\\obj\\",
+      "projectPath": "C:\\Users\\FiruzIR\\Desktop\\SimpleRestaurant4\\SimpleRestaurantt3\\SimpleRestaurantt3.csproj",
+      "packagesPath": "C:\\Users\\FiruzIR\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\FiruzIR\\Desktop\\SimpleRestaurant4\\SimpleRestaurantt3\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Фируз\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\FiruzIR\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -59,6 +57,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[5.0.15, 5.0.15]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -67,7 +71,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

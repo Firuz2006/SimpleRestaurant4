@@ -18,8 +18,6 @@
         <ComboBox x:Name="WaterTypeName" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Margin="0,0,-140,410"/>
         <Button x:Name="AddRequest" Content="Receive" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Margin="32,0,0,315" Click="AddRequest_Click"/>
         <Button x:Name="SendToCook" Content="Send all Customer requests to the Cook" HorizontalAlignment="Center" VerticalAlignment="Center" Width="246" Margin="0,0,0,235" Height="19" Click="SendToCook_Click"/>
-        <Label Content="Egg Quality: " HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,160,190" Width="83"/>
-        <Button x:Name="ResultView" Content="Serve prepared food to the Customer" HorizontalAlignment="Center" VerticalAlignment="Center" Width="246" Margin="0,0,0,125" Click="ResultView_Click"/>
         <Label Content="Results" Margin="0,0,184,80" Width="59" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <ListBox x:Name="ResultList" HorizontalAlignment="Center" Height="237" VerticalAlignment="Center" Width="246" Margin="0,180,0,0"/>
     </Grid>

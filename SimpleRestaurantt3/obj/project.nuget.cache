@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "35+y/lQ2z+C57rZJn+U7T0Mq9j6dMO6XCuG3jHOBLh3wWOB9UMSTjelj7JvqVBZ9ObidBLXXl1g+Dd5AnQD58w==",
+  "dgSpecHash": "A7pDL7jYg2ialK1eThaCmUUNXuOFqBSvDJMYi6nwRQR52oZGwAJuikLGaQS4F+JeYxz/OQoSbfc6fkm70goU9A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Фируз\\Desktop\\HaoRestaurant_edited\\SimpleRestaurantt3\\SimpleRestaurantt3\\SimpleRestaurantt3.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\FiruzIR\\Desktop\\SimpleRestaurant4\\SimpleRestaurantt3\\SimpleRestaurantt3.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\FiruzIR\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.15\\microsoft.netcore.app.host.win-x64.5.0.15.nupkg.sha512"
+  ],
   "logs": []
 }

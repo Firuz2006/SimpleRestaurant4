@@ -1,39 +1,45 @@
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HaoRestaurant.EditedScripts
 {
     public class Cook
     {
-        
-        public delegate List<string> processed();
+        public delegate void serve(TableRequest tableRequest);
 
-        public static event processed Processed;
+        public event serve Serve;
+        public bool IsBussed { get; private set; }
         
-        public Cook()
+        public async Task Process(TableRequest tableRequest)
         {
-            Server.Ready += Process;
-        }
-        public void Process(TableRequest tableRequest)
-        {
-            var ChickenAll = tableRequest.Get<Chicken>();
+            IsBussed = true;
+            Task t = new Task(() =>
+            {
+                var chickenAll = tableRequest.Get<Chicken>();
         
-            var EggAll = tableRequest.Get<Egg>();
+                var eggAll = tableRequest.Get<Egg>();
             
-            foreach (var chicken in ChickenAll)
-            {
-                ((Chicken)chicken).Obtain();
-                ((Chicken)chicken).CutUp();
-                ((Chicken)chicken).Cook();
-            }
-            foreach (var egg in EggAll)
-            {
-                ((Egg)egg).Obtain();
-                ((Egg)egg).Crack();
-                ((Egg)egg).Dispose();
-                ((Egg)egg).Cook();
-                ((Egg)egg).Serve();
-            }
-        
-        } 
+                foreach (var chicken in chickenAll)
+                {
+                    ((Chicken)chicken).Obtain();
+                    ((Chicken)chicken).CutUp();
+                    ((Chicken)chicken).Cook();
+                }
+                foreach (var egg in eggAll)
+                {
+                    ((Egg)egg).Obtain();
+                    ((Egg)egg).Crack();
+                    ((Egg)egg).Dispose();
+                    ((Egg)egg).Cook();
+                    ((Egg)egg).Serve();
+                }
+                Thread.Sleep(10000);
+                IsBussed = false;
+                Serve.Invoke(tableRequest);
+            });
+            t.Start();
+            await t;
+        }
     }
 }

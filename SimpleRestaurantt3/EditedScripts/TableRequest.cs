@@ -1,43 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace HaoRestaurant.EditedScripts
 {
-    public class TableRequest:IEnumerable,IDisposable
+    public class TableRequest:IEnumerable<string>,IDisposable
     {
-        private readonly Dictionary<string, List<IMenuItem>> Items = new Dictionary<string, List<IMenuItem>>();
-        public void Add<T>(string customerName)
+        private readonly Dictionary<string, List<IMenuItem>> _items = new Dictionary<string, List<IMenuItem>>();
+        public void Add<T>(string customerName) where  T:IMenuItem ,new()
         {
-            if (Items.Count==0)
+            if (!_items.ContainsKey(customerName))
             {
-                Items.Add(customerName,new List<IMenuItem>());
+                _items.Add(customerName,new List<IMenuItem>());
             }
-            Items[customerName].Add((IMenuItem) Activator.CreateInstance<T>());
+            _items[customerName].Add(new T());
         }
 
         public List<IMenuItem> Get<T>()
         {
-            List<IMenuItem> resList = new List<IMenuItem>();
-            foreach( string key in Items.Keys)
-            {
-                foreach (var order in Items[key])
-                {
-                    if (order.GetType()==typeof(T))
-                    {
-                        resList.Add(order);
-                    }
-                }
-            }
-            return resList;
+            return _items.Keys.SelectMany(key => _items[key]).OfType<T>().Cast<IMenuItem>().ToList();
         }
-        private List<IMenuItem> this[string customerName] => Items[customerName];
+        public List<IMenuItem> this[string customerName] => _items[customerName];
 
-        private IEnumerator GetEnumerator()
+        public IEnumerator<string> GetEnumerator()
         {
-            foreach (var V in Items.Keys)
-            {
-                yield return this[V];
-            }
+            return ((IEnumerable<string>) _items.Keys).GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -46,7 +34,7 @@ namespace HaoRestaurant.EditedScripts
 
         public void Dispose()
         {
-            Items.Clear();
+            _items.Clear();
         }
     }
 }

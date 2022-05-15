@@ -1,106 +1,90 @@
 using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.Linq;
+using System.Threading;
+
 namespace HaoRestaurant.EditedScripts
 {
-    public class Server
+    public static class Server
     {
-        private readonly TableRequest tableRequest=new TableRequest();
+        public delegate void ready(List<string> lis);
+        public static event ready Ready;
 
-        // public TableRequest getTableRequest => tableRequest;
+        private static readonly TableRequest TableRequest=new();
+        
+        private static List<Cook> _cooks=new();
 
-        private readonly List<Drink> waters=new List<Drink>();
-        private byte CustomerIndex = 0;
 
-        public delegate void ReadyCook(TableRequest tableRequest);
-
-        public static event ReadyCook? Ready;
-
-        public void Invoke()
+        public static async void Send()
         {
-            Ready?.Invoke(tableRequest);
+            var cook = _cooks.SingleOrDefault(c => !c.IsBussed);
+            if (cook != null)
+                await cook.Process(TableRequest);
+            else
+            {
+                Cook newCook = new Cook();
+                newCook.Serve += Serve;
+                await newCook.Process(TableRequest);
+                _cooks.Add(newCook);
+            }
+            Thread.Sleep(1000);
         }
         
-        public Server()
+        public static void Receive(string customerName ,int eggQuantity,int chickenQuantity,Type waterType)
         {
-            Cook.Processed += Serve;
-        }
-        public void Receive(string customerName ,int EggQuantity,int ChickenQuantity,Type WaterType)
-        {
-            if (CustomerIndex == 8)
+            if (waterType == typeof(Coca_Cola))
             {
-                MessageBox.Show("maximum 8");
-                return;
-            }
-
-            if (WaterType == typeof(Coca_Cola))
+                TableRequest.Add<Coca_Cola>(customerName);
+            }else if (waterType==typeof(Pepsi))
             {
-                tableRequest.Add<Coca_Cola>(customerName);
-            }else if (WaterType==typeof(Pepsi))
-            {
-                tableRequest.Add<Pepsi>(customerName);
+                TableRequest.Add<Pepsi>(customerName);
             }
             else
             {
-                tableRequest.Add<Tea>(customerName);
+                TableRequest.Add<Tea>(customerName);
             }
-            
-            for (int i = 0; i <EggQuantity ; i++)
+             
+            for (int i = 0; i <eggQuantity ; i++)
             {
-                tableRequest.Add<Egg>(customerName);
+                TableRequest.Add<Egg>(customerName);
             }
             
-            for (int i = 0; i <ChickenQuantity ; i++)
+            for (int i = 0; i <chickenQuantity ; i++)
             {
-                tableRequest.Add<Chicken>(customerName);
+                TableRequest.Add<Chicken>(customerName);
             }
-            
-            CustomerIndex++;
         }
-        
-        public List<string> Serve()
+        private static void Serve(TableRequest TableRequest)
         {
             int eggQuantity, chickenQuantity;
             List<string> res = new List<string>();
-            for (byte i = 0; i < CustomerIndex; i++)
+            foreach (string customerName in TableRequest)
             {
                 eggQuantity = 0;
                 chickenQuantity = 0;
-                string drink = "";
-                foreach (var order in tableRequest)
+                string drink=null;
+                foreach (IMenuItem order in TableRequest[customerName])
                 {
                     if (order is Chicken)
                     {
                         chickenQuantity++;
                     }
-                    else if(order is Egg)
+                    else if (order is Egg)
                     {
                         eggQuantity++;
                     }
-                    else if(order is Coca_Cola cola)
+                    else if (order is Drink drinkType)
                     {
-                        drink = "CocaCola ";
-                        cola.Obtain();
-                        cola.Serve();
+                        drink = drinkType.GetType().Name;
+                        drinkType.Obtain();
+                        drinkType.Serve();
                     }
-                    else if(order is Pepsi pepsi)
-                    {
-                        drink = "Pepsi ";
-                        pepsi.Obtain();
-                        pepsi.Serve();
-                    }
-                    else if(order is Tea tea)
-                    {
-                        drink = "Tea ";
-                        tea.Obtain();
-                        tea.Serve();
-                    }
+                    
                 }
-                res.Add("Customer " + i + " is served " + drink + chickenQuantity + " chicken, " + eggQuantity + " egg");
+                res.Add("Customer " +customerName +" is served " + drink+", " + chickenQuantity + " chicken, " + eggQuantity + " egg");
             }
-            tableRequest.Dispose();
-            CustomerIndex = 0;
-            return res;
+
+            Ready.Invoke(res);
         }
     }
 }

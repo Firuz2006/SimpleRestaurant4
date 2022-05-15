@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
+using static HaoRestaurant.EditedScripts.Server;
 using System.Windows;
 using HaoRestaurant.EditedScripts;
+
 namespace HaoRestaurant
 {
     public partial class MainWindow
     {
-        private bool IsShippedToCook = false;
+        private bool _isShippedToCook;
+
+        private int _tableIndex;
         public MainWindow()
         {
             InitializeComponent();
@@ -14,8 +18,19 @@ namespace HaoRestaurant
             WaterTypeName.Items.Add("Coca-Cola");
             WaterTypeName.Items.Add("Pepsi");
             WaterTypeName.SelectedIndex = 0;
+
+            Ready += list =>
+            {
+                Dispatcher.Invoke(() => { ResultList.Items.Add("table " + _tableIndex); 
+                _tableIndex++;
+                foreach (string li in list)
+                {
+                    ResultList.Items.Add(li);
+                }});
+            };
+
         }
-        private readonly Server server = new Server();
+
         private void AddRequest_Click(object sender, RoutedEventArgs e)
         {
             Type water = typeof(Pepsi);
@@ -28,6 +43,7 @@ namespace HaoRestaurant
                     water = typeof(Coca_Cola);
                     break;
             }
+
             int a = -2;
             try
             {
@@ -37,6 +53,7 @@ namespace HaoRestaurant
                     a = -11;
                     int.Parse("d");
                 }
+
                 a = -1;
                 a = int.Parse(EggQuantityName.Text);
                 if (a < 0)
@@ -44,7 +61,12 @@ namespace HaoRestaurant
                     a = -22;
                     int.Parse("d");
                 }
-                server.Receive(CustomerName.Text,int.Parse(EggQuantityName.Text), int.Parse(ChickenQuantityName.Text), water);
+
+                ResultList.Items.Add(CustomerName.Text + " ordered " + WaterTypeName.Text + " " +
+                                     ChickenQuantityName.Text + " Chicken " + EggQuantityName.Text + " Egg");
+                Receive(CustomerName.Text, int.Parse(EggQuantityName.Text), int.Parse(ChickenQuantityName.Text),
+                    water);
+                _isShippedToCook = false;
             }
             catch (Exception exception)
             {
@@ -57,7 +79,7 @@ namespace HaoRestaurant
                         MessageBox.Show("please input zero or natural number in Chicken Quantity");
                         break;
                     case -22:
-                        MessageBox.Show("please input zero or natural number in Egg Quantity"); 
+                        MessageBox.Show("please input zero or natural number in Egg Quantity");
                         break;
                     case -2:
                         MessageBox.Show("please input integer type in Chicken Quantity");
@@ -65,36 +87,18 @@ namespace HaoRestaurant
                 }
             }
         }
+
         private void SendToCook_Click(object sender, RoutedEventArgs e)
         {
-            if (IsShippedToCook)
+            if (_isShippedToCook)
             {
                 MessageBox.Show("first order something");
             }
             else
             {
-                server.Invoke();
-                IsShippedToCook = true;
+                Send();
+                _isShippedToCook = true;
             }
-        }
-
-        private void ResultView_Click(object sender, RoutedEventArgs e)
-        {
-            IsShippedToCook = false;
-            var outs = server.Serve();
-            if (outs.Count == 0)
-            {
-                MessageBox.Show("no orders to give");
-            }
-            else
-            {
-                for (int i = 0; i < outs.Count; i++)
-                {
-                    ResultList.Items.Add(outs[i]);
-                }
-                
-            }
-            
         }
     }
 }
