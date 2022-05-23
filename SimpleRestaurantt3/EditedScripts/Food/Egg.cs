@@ -2,7 +2,7 @@ using System;
 
 namespace HaoRestaurant.EditedScripts
 {
-    public sealed class Egg:CookedFood
+    public sealed class Egg : CookedFood
     {
         public bool Crack()
         {
@@ -11,11 +11,11 @@ namespace HaoRestaurant.EditedScripts
 
         private int getQuality()
         {
-            return new Random().Next(30,100);
+            return new Random().Next(30, 100);
         }
         private void DiscardShell()
         {
-            
+
         }
 
         public void Dispose()

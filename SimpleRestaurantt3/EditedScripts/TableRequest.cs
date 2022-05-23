@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace HaoRestaurant.EditedScripts
 {
-    public class TableRequest:IEnumerable<string>,IDisposable
+    public class TableRequest : IEnumerable<string>, IDisposable
     {
         private readonly Dictionary<string, List<IMenuItem>> _items = new Dictionary<string, List<IMenuItem>>();
-        public void Add<T>(string customerName) where  T:IMenuItem ,new()
+        public void Add<T>(string customerName) where T : IMenuItem, new()
         {
             if (!_items.ContainsKey(customerName))
             {
-                _items.Add(customerName,new List<IMenuItem>());
+                _items.Add(customerName, new List<IMenuItem>());
             }
             _items[customerName].Add(new T());
         }
@@ -25,7 +25,7 @@ namespace HaoRestaurant.EditedScripts
 
         public IEnumerator<string> GetEnumerator()
         {
-            return ((IEnumerable<string>) _items.Keys).GetEnumerator();
+            return ((IEnumerable<string>)_items.Keys).GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {

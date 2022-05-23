@@ -7,7 +7,7 @@ namespace HaoRestaurant.EditedScripts
     public class Cook
     {
         public delegate void serve(TableRequest tableRequest);
-
+        //TODO: remove Serve event. The event should be in only project #4.
         public event serve Serve;
         public bool IsBussed { get; private set; }
         

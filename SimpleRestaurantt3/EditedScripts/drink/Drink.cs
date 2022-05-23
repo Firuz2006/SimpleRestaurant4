@@ -1,6 +1,7 @@
 namespace HaoRestaurant.EditedScripts
 {
-    public abstract class Drink:IMenuItem
+    //TODO: actually Obtain and Serve methods should be abstract 
+    public abstract class Drink : IMenuItem
     {
         public void Obtain()
         {

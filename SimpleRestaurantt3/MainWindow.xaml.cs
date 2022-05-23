@@ -31,6 +31,7 @@ namespace HaoRestaurant
 
         }
 
+        //TODO: Receive 1 chicken and 2 eggs and send it. Again receive 1 chicken and 2 eggs and send it to the cook. The result is one person ordered 2 chicken and 4 eggs. BUT, it should be 2 tables: 2x (1 chicken and 2 eggs) - 2 person.
         private void AddRequest_Click(object sender, RoutedEventArgs e)
         {
             Type water = typeof(Pepsi);

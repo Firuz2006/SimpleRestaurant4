@@ -1,6 +1,7 @@
 namespace HaoRestaurant.EditedScripts
 {
-    public abstract class CookedFood:IMenuItem
+    //TODO: actually Obtain, Serve and Cook methods should be abstract not virtual
+    public abstract class CookedFood : IMenuItem
     {
 
 
@@ -14,7 +15,7 @@ namespace HaoRestaurant.EditedScripts
 
         public virtual void Cook()
         {
-            
+
         }
     }
 }
